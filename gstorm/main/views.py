@@ -10,7 +10,7 @@ class SingleGraphView(View):
     def get(self, request, *args, **kwargs):
         
         graph = Graph.objects.get(id=request.GET['id'])
-        return render(request, "index.html", {"graph_string": graph.graph_string, "id": graph.id})
+        return render(request, "index.html", {"graph_string": graph.graph_string, "id": graph.id, "title": graph.title})
     
     def post(self, request, *args, **kwargs):
         id = request.POST['id'] # id of the graph you are updating
