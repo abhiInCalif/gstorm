@@ -18,7 +18,7 @@
          // time to post to that nice endpoint
         var title = $("#title").val();
         $.post("/add/", {"title": title}, function(data) {
-          window.location.href = "http://localhost:8000/edit/?id=" + data.id;
+          window.location.href = "edit/?id=" + data.id;
         });
       });
     });
