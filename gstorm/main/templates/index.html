@@ -1,0 +1,156 @@
+{% load staticfiles %}
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Computer Brainstorming</title>
+	<link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}" />
+  <style>
+
+    .link {
+      fill: none;
+      stroke: #666;
+      stroke-width: 1.5px;
+    }
+
+    .circle {
+      fill: #333;
+      stroke: #333;
+      stroke-width: 2.5px;
+      pointer-events: all;
+    }
+    
+    .circle_alt {
+      fill: white;
+      stroke: #333;
+      stroke-width: 2.5px;
+      pointer-events: all;
+    }
+
+    text {
+      font-family: Arial;
+      pointer-events: none;
+    }
+    
+    #idea_desc {
+      font: 20px Arial;
+    }
+    
+    #sidepanel {
+      float: right;
+      width: 20%;
+      height: 100%;
+      margin-right: 70px;
+      margin-top: 10px;
+    }
+    
+    #chart {
+      float: left;
+      height: 800;
+      width: 70%;
+    }
+    
+    #content_container {
+      margin-bottom: 50px;
+    }
+    
+    .btn-full {
+      width: 100%;
+    }
+    
+    #add_idea_form {
+      display: none;
+      margin-top: 20px;
+    }
+    
+    .overlay {
+      fill: none;
+      pointer-events: all;
+    }
+
+  </style>
+  <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+  <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.js' %}"></script>
+  <script src="{% static 'd3.js' %}"></script>
+  <script>
+  var TogetherJSConfig_dontShowClicks = true;
+  // var TogetherJSConfig_cloneClicks = true;
+  var TogetherJSConfig_autoStart = true;
+  var TogetherJSConfig_suppressJoinConfirmation = true;
+  var TogetherJSConfig_findRoom = "index_{{ id }}";
+  </script>
+  <script src="https://togetherjs.com/togetherjs-min.js"></script>
+  <script src="{% static 'sync.js' %}"></script>
+  <script src="{% static 'sticky.js' %}"></script>
+  
+  <script>
+  var graph_string = "{{ graph_string }}";
+  var id = "{{ id }}";
+  
+    $(document).ready(function() {
+      var data = toJSON(graph_string);
+      var gstorm = new GStorm(data);
+      gstorm.render();
+      $("#add_idea").on("click", function() {
+        $("#add_idea_form").show();
+      });
+      
+      $("#idea_cancel").on('click', function() {
+        $("#add_idea_form").hide();
+      });
+      
+      $("#idea_button_add").on('click', function() {
+        var radioSelect = $('input[name=nodeTypes]:checked').val();
+        gstorm.addIdea($("#ideaName").val(), $("#ideaDesc").val(), radioSelect);
+        // createChart();
+        $("#ideaName").val("");
+        $("#ideaDesc").val("");
+      });
+      
+      var createChart = function() {
+        $("#chart").empty();
+        gstorm.render();
+      };
+    });
+  </script>
+</head>
+<body>
+  <div>
+    {{ graph.title }}
+  </div>
+  <div id="chart">
+  </div>
+  <div id="sidepanel">
+    <div id="content_container">
+      <h3 id="idea_name">Name of Idea</h3>
+      <div id="idea_desc">
+        Some description follows here
+      </div>
+    </div>
+    <!-- <button onclick="TogetherJS(this); return false;">Start TogetherJS</button> -->
+    <button type="button" id="add_idea" class="btn btn-lg btn-full btn-primary">Add an idea</button>
+    <div id="add_idea_form">
+      <div class="form-group">
+          <label for="ideaName"><h4>Idea Name</h4></label>
+          <input type="text" class="form-control" id="ideaName" placeholder="Enter Idea Name" />
+      </div>
+      <div class="btn-group" data-toggle="buttons">
+          <label class="btn btn-primary active">
+            <input type="radio" name="nodeTypes" id="node" autocomplete="off" value="Node" checked> Node
+          </label>
+          <label class="btn btn-primary">
+            <input type="radio" name="nodeTypes" id="hub" value="Hub" autocomplete="off"> Hub
+          </label>
+      </div>
+      <div class="form-group">
+          <label for="ideaDesc"><h4>Idea Description</h4></label>
+          <textarea class="form-control" rows="7" id="ideaDesc"></textarea>
+      </div>
+      <button type="button" class="btn btn-default" id="idea_button_add">Add</button>
+      <button type="button" class="btn btn-default" id="idea_cancel">Cancel</button>
+    </div>
+  </div>
+</body>
+</html>

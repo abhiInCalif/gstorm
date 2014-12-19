@@ -1,0 +1,101 @@
+{% load staticfiles %}
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Computer Brainstorming</title>
+	<link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}"></link>
+  <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+  <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.js' %}"></script>
+  <script src="{% static 'd3.js' %}"></script>
+  <script src="{% static 'sticky.js' %}"></script>
+  
+  <script>
+    $(document).ready(function() {
+      $("#add_brainstorm").on("click", function() {
+         // time to post to that nice endpoint
+        var title = $("#title").val();
+        $.post("/add/", {"title": title}, function(data) {
+          window.location.href = "http://localhost:8000/edit/?id=" + data.id;
+        });
+      });
+    });
+  </script>
+    
+  <style>
+  #sidepanel {
+    height: 100%;
+    margin-right: 50px;
+    width: 100%;
+  }
+  
+  #title {
+    height: 100px;
+    font-size: 54px;
+    border: 0px;
+    box-shadow: 0px;
+    width: 75%;
+    display: inline-block;
+    color: #337ab7;
+  }
+  #add_brainstorm {
+    height: 100px;
+    width: 25%;
+    border-radius: 0px;
+    font-size: 22px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+  }
+  a {
+    text-decoration: none;
+    font-size: 54px;
+    color: inherit;
+    position: relative;
+    top: 20px;
+    left: 50px;
+  }
+  
+  a:hover {
+    text-decoration: none;
+    color:inherit;
+  }
+  
+  .graph_links {
+    height: 100px;
+    width: 100%;
+    text-align: left;
+    color: #337ab7;
+  }
+  
+  .graph_links:hover {
+    background-color: #337ab7;
+    color: white;
+  }
+  
+  #iterator_container {
+    position: relative;
+    top: -30px;
+  }
+  </style>
+</head>
+<body>
+  <div>
+    <div id="sidepanel">
+      <form role="form">
+        <div class="form-group" id+"titleInput">
+          <input type="text" class="form-control" id="title" placeholder="Brainstorm Title">
+          <button type="button" id="add_brainstorm" class="btn btn-lg btn-primary">Brainstorm!</button>
+        </div>
+      </form>
+    </div>
+    <div id="iterator_container">
+      {% for graph in graphs %}
+        <div class="graph_links"><h2><a href="/edit/?id={{graph.id}}">Graph {{graph.id}} - {{graph.title}}</a></h2></div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>
