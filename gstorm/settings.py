@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import dj_database_url
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -67,12 +68,9 @@ DATABASES = {
     }
 }
 
-abspath = os.path.abspath(__file__)
-if 'abhinav' not in abspath:
+if 'ON_HEROKU' in os.environ:
 # Parse database configuration from $DATABASE_URL
-    import dj_database_url
     DATABASES['default'] =  dj_database_url.config()
-    DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
