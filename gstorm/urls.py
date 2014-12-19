@@ -9,6 +9,6 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^edit/', views.SingleGraphView.as_view(), name='single-graph'),
-    urlr'^/', views.CreateGraphView.as_view(), name='add-graph-index'),
+    url(r'^/', views.CreateGraphView.as_view(), name='add-graph-index'),
     url(r'^add/', views.CreateGraphView.as_view(), name='add-graph')
 )
