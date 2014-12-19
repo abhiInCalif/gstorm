@@ -38,6 +38,12 @@
       font: 20px Arial;
     }
     
+    #title {
+      position: absolute;
+      left: 25px;
+      top: 10px;
+    }
+    
     #sidepanel {
       float: right;
       width: 20%;
@@ -48,6 +54,7 @@
     
     #chart {
       float: left;
+      margin-top: 70px;
       height: 800;
       width: 70%;
     }
@@ -117,8 +124,8 @@
   </script>
 </head>
 <body>
-  <div>
-    {{ title }}
+  <div id="title">
+    <h1>{{ title }}</h1>
   </div>
   <div id="chart">
   </div>
